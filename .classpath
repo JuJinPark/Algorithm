@@ -12,7 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="testsrc"/>
-	<classpathentry kind="lib" path="C:/xxx/commons-lang3-3.9-bin/commons-lang3-3.9/commons-lang3-3.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
