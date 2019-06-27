@@ -127,23 +127,23 @@ class BestFishSol{
 			}
 
 			sharkBags=getNewSharkBags();
-		System.out.println("-----"+i+"후");
+		//System.out.println("-----"+i+"후");
 			
-			for(int k=0;k<sharkBags.length;k++) {
-				System.out.println("-----"+k+"줄");
-				if(sharkBags[k]!=null) {
-					  for (Entry<SharkCor, shark> entry : sharkBags[k].entrySet()) {
-					    	
-					    	
-				            System.out.println("Key : " + entry.getKey() 
-								+ " Value : " + entry.getValue());
-				        }	
-				}
-			
-					System.out.println("-----"+k+"줄");
-			}
+//			for(int k=0;k<sharkBags.length;k++) {
+//				System.out.println("-----"+k+"줄");
+//				if(sharkBags[k]!=null) {
+//					  for (Entry<SharkCor, shark> entry : sharkBags[k].entrySet()) {
+//					    	
+//					    	
+//				            System.out.println("Key : " + entry.getKey() 
+//								+ " Value : " + entry.getValue());
+//				        }	
+//				}
+//			
+//				//	System.out.println("-----"+k+"줄");
+//			}
 		  
-		 System.out.println("-----"+i+"후");
+		// System.out.println("-----"+i+"후");
 		
 		}
 		
@@ -159,6 +159,7 @@ class BestFishSol{
 				if(entry.getKey().row<closestRow) {
 					catchableSharkKey=entry.getKey();
 					catchableShark=entry.getValue();
+					closestRow=catchableShark.row;
 				}
 				 
 //				 System.out.println("Key : " + entry.getKey() 
@@ -236,15 +237,11 @@ class BestFishSol{
 				//shrk.dir=shrk.dir+add;
 				add=add*(-1);
 				
-				if(shrk.dir==1) {
-				shrk.dir=2;
-			}else if(shrk.dir==2) {
-				shrk.dir=1;
-			}else if(shrk.dir==3) {
-				shrk.dir=4;
-		}else if(shrk.dir==4) {
-			shrk.dir=3;
-		}
+				if(shrk.dir<=2) {
+				shrk.dir=shrk.dir+(add);
+			}else {
+				shrk.dir=shrk.dir+(add*(-1));
+			}
 				
 				
 			}
