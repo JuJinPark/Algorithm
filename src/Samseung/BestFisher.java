@@ -232,7 +232,9 @@ class BestFishSol{
 			add=-1;
 		}
 		
-		for(int i=0;i<shrk.speed;i++) {
+		
+		int speed=shrk.speed%((maxlength-1)*2);
+		for(int i=0;i<speed;i++) {
 			if(crtP+add==0||crtP+add>maxlength) {
 				//shrk.dir=shrk.dir+add;
 				add=add*(-1);
