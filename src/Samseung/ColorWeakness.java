@@ -120,7 +120,7 @@ public class ColorWeakness {
 		que.offer(startP);
 
 		while(!que.isEmpty()) {
-			pointC crt=que.poll();
+			pointC crt=
 			
 			for(int i=0;i<4;i++) {
 				int nxtR=crt.r+dirR[i];
