@@ -1,4 +1,4 @@
-package Samseung;
+package DP;
 import java.util.Scanner;
 
 public class 계단오르기 {

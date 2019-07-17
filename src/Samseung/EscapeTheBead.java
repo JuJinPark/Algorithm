@@ -33,17 +33,7 @@ public class EscapeTheBead {
 				
 			}
 		}
-//		for(int i=0;i<n;i++) {
-//			
-//		
-//			for(int j=0;j<m;j++) {
-//
-//				System.out.print(board[i][j]);
-//				
-//			}
-//			System.out.println();
-//		}
-//		System.out.println("O");
+
 		
 		startPoint.setDirFrom(0);
 		startPoint.setMoveCount(0);
@@ -75,8 +65,8 @@ class EscapeTheBeadSol{
 		while(!que.isEmpty()) {
 			RedAndBlueBead crt=que.poll();
 			
-			if(crt.moveCount>10) {
-				return 0;
+			if(crt.moveCount>=10) {
+				return -1;
 			}
 			//1 은 아래 2=위 3=오른쪽 4=왼쪽
 			for(int i=1;i<=4;i++) {
@@ -88,9 +78,9 @@ class EscapeTheBeadSol{
 				int Nxtredm=crt.redm;
 				int Nxtbluen=crt.bluen;
 				int Nxtbluem=crt.bluem;
-//				
-//				boolean blueFoundHole;
-//				boolean redFoundHole;
+				
+			boolean blueFoundHole = false;
+
 				
 				int crtRangeR = crt.redn;
 				
@@ -109,7 +99,9 @@ class EscapeTheBeadSol{
 					int tmpNxtbluem = Nxtbluem+dirC[i];
 					
 					if(board[tmpNxtbluen][tmpNxtbluem].equals("O")) {
-						return 0;
+						blueFoundHole=true;
+						break;
+						
 					}
 					if(board[tmpNxtbluen][tmpNxtbluem].equals("#")) {
 						break;
@@ -123,7 +115,10 @@ class EscapeTheBeadSol{
 					int tmpNxtredm = Nxtredm+dirC[i];
 					
 					if(board[tmpNxtredn][tmpNxtredm].equals("O")) {
-						return 1;
+						if(!blueFoundHole) {
+							return crt.moveCount+1;
+						}
+						
 					}
 					
 					if(board[tmpNxtredn][tmpNxtredm].equals("#")) {
@@ -175,39 +170,13 @@ class EscapeTheBeadSol{
 					
 				}
 				
-			
-//			if(blueFoundHole) {
-//				return 0;
-//			}
-//			if(redFoundHole) {
-//				return 1;
-//			}
-				
 
-		
+
+		if(!blueFoundHole) {
+			
+	
 				if(Nxtredn!=crt.redn||Nxtredm!=crt.redm||Nxtbluen!=crt.bluen||Nxtbluem!=crt.bluem) {
-					//System.out.println(dir[i]+"방향 결정");
-					System.out.println(dir[i]+"방향"+crt.moveCount);
-					
-					for(int g=0;g<board.length;g++) {
-					
-				
-					for(int h=0;h<board[0].length;h++) {
-						if(g==Nxtredn&&Nxtredm==h) {
-							System.out.print('R');
-						}else if(g==Nxtbluen&&Nxtbluem==h) {
-							System.out.print('B');
-						}else {
-							System.out.print(board[g][h]);
-						}
-						
-		
-					
-						
-					}
-					System.out.println();
-				}
-					System.out.println();
+
 					RedAndBlueBead nxt= new RedAndBlueBead();
 					nxt.setRedn(Nxtredn);
 					nxt.setRedm(Nxtredm);
@@ -217,6 +186,7 @@ class EscapeTheBeadSol{
 					nxt.setDirFrom(i+dirR[i]+dirC[i]);
 					que.add(nxt);
 				}
+		}
 		
 			}
 			
@@ -271,16 +241,6 @@ class RedAndBlueBead{
 		this.moveCount = moveCount;
 	}
 
-	
-//	RedAndBlueBead(int redn,int redm,int bluen,int bluem,int dirFrom,int moveCount){
-//		this.redn=redn;
-//		this.redm=redm;
-//		this.bluen=bluen;
-//		this.bluem=bluem;
-//		this.dirFrom=dirFrom;
-//		this.moveCount=moveCount;
-//		
-//		
-//	}
+
 	
 }
