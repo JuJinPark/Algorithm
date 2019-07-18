@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: wnwls
-Build-Jdk: 1.8.0_171
+Built-By: jujin
+Build-Jdk: 1.8.0
 Created-By: Maven Integration for Eclipse
 
