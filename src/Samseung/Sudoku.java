@@ -3,6 +3,7 @@ package Samseung;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,18 +27,38 @@ public class Sudoku {
 				board[i][j]= (line.charAt(j))-'0';
 			}
 		}
-		
-		
-		while(!que.isEmpty()) {
-			
-			//check row
-			// check col
-			// chekc squre
-			
-		}
+		initializeList();
+		dfs();
+//		System.out.println(que.size());
+//		System.out.println(undecidedCount+"before");
+//		while(!que.isEmpty()) {
+//			SudokuCor crtcor=que.poll();
+//			//System.out.println(crtcor.row+","+crtcor.col);
+//			chekcRow(crtcor);
+//			checkCol(crtcor);
+//			checkSquare(crtcor);
+//
+//			
+//		}
+//		List<Integer> check=candidateNmberListPerCor.get(new SudokuCor(4,7));
+//		System.out.println(check.toString());
+	//	System.out.println(undecidedCount+"after");
+		print();
 		
 		
 
+	}
+	
+	public static void print() {
+		for(int i=0;i<9;i++) {
+			for(int j=0;j<9;j++) {
+				System.out.print(board[i][j]+"");
+			}
+			
+				System.out.println();
+			
+			
+		}
 	}
 	
 	public static void chekcRow(SudokuCor cor) {
@@ -68,8 +89,8 @@ public class Sudoku {
 	
 	public static void checkSquare(SudokuCor cor) {
 		
-		for(int i=3*(cor.row/3);i<(3*(cor.row/3))+2;i++) {
-			for(int j=3*(cor.col/3);j<(3*(cor.col/3))+2;j++) {
+		for(int i=3*(cor.row/3);i<=(3*(cor.row/3))+2;i++) {
+			for(int j=3*(cor.col/3);j<=(3*(cor.col/3))+2;j++) {
 				
 				if(board[i][j]==0) {
 					SudokuCor nxtcor=new SudokuCor(i,j);
@@ -87,7 +108,9 @@ public class Sudoku {
 	
 		List<Integer> list=candidateNmberListPerCor.get(nxtcor);
 	
-			list.remove(value);
+			
+			
+			removeValFromlist(list,value);
 			
 			if(list.size()==1) {
 				undecidedCount--;
@@ -97,6 +120,93 @@ public class Sudoku {
 			}
 	}
 	
+	private static void removeValFromlist(List<Integer> list, int value) {
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i)==value) {
+				list.remove(i);
+			}
+		}
+		
+	}
+	
+	public static boolean dfs() {
+		
+//		
+//		if(undecidedCount==0) {
+//			return true;
+//		}
+//		
+		
+		for(int i=0;i<9;i++) {
+			for(int j=0;j<9;j++) {
+				if(board[i][j]==0) {
+					
+					
+					List<Integer> list = candidateNmberListPerCor.get(new SudokuCor(i,j));
+					
+					for(Integer nmb:list) {
+						if(isPossibleInRow(i,j,nmb)&&isPossibleIncol(i,j,nmb)&&isPossibleInSquare(i,j,nmb)) {
+						
+							
+							board[i][j]=nmb;
+							undecidedCount--;
+							
+							if(dfs()) {
+								return true;
+							}
+							undecidedCount++;
+							board[i][j]=0;
+							
+							//System.out.println(i+","+j+","+nmb);
+						}
+						
+				
+					}
+					return false;
+					
+					
+				}
+				
+				
+			}
+		}
+		
+		return true;
+		
+	
+	}
+
+	private static boolean isPossibleInSquare(int row, int col, Integer nmb) {
+		for(int i=3*(row/3);i<=(3*(row/3))+2;i++) {
+			for(int j=3*(col/3);j<=(3*(col/3))+2;j++) {
+				
+				if(board[i][j]==nmb) {
+					return false;
+				}
+				
+			}
+		}
+		return true;
+	}
+
+	private static boolean isPossibleIncol(int row, int col, Integer nmb) {
+		for(int i=0;i<9;i++) {
+			if(board[row][i]==nmb) {
+			return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean isPossibleInRow(int row, int col, Integer nmb) {
+		for(int i=0;i<9;i++) {
+			if(board[i][col]==nmb) {
+			return false;
+			}
+		}
+		return true;
+	}
+
 	public static void initializeList() {
 		for(int i=0;i<9;i++) {
 			
@@ -106,8 +216,9 @@ public class Sudoku {
 					
 					SudokuCor cor= new SudokuCor(i,j);
 					
-					List<Integer> list=getCandidateNumber();
+					List<Integer> list=getCandidateNumber(i,j);
 					if(list.size()==1) {
+						undecidedCount--;
 						que.add(cor);
 						board[i][j]=list.get(0);
 						continue;
@@ -119,21 +230,61 @@ public class Sudoku {
 		
 	}
 	
-	public static List<Integer> getCandidateNumber(){
+	public static List<Integer> getCandidateNumber(int row,int col){
+		boolean[] array=new boolean [10];
+		List<Integer> list= new LinkedList();
 		
-		for() {
-			checkrow
-			checkcol
-			check square
+		
+			checkNmbForRow(array,row,col);
+			checkNmbForCol(array,row,col);
+			checkNmbForSquare(array,row,col);
 			
+		
+		
+		for(int i=9;i>0;i--) {
+			if(array[i]==false) {
+				list.add(i);
+			}
 		}
 		
 		
-		
-		return null;
+		return list;
 		
 		
 	}
+
+	private static void checkNmbForRow(boolean[] array, int row, int col) {
+		
+		for(int i=0;i<9;i++) {
+			array[board[i][col]]=true;
+			
+
+		}
+		
+	}
+	
+private static void checkNmbForCol(boolean[] array, int row, int col) {
+		
+		for(int i=0;i<9;i++) {
+			array[board[row][i]]=true;
+			
+
+		}
+		
+	}
+
+private static void checkNmbForSquare(boolean[] array, int row, int col) {
+	
+	for(int i=3*(row/3);i<=(3*(row/3))+2;i++) {
+		for(int j=3*(col/3);j<=(3*(col/3))+2;j++) {
+			//System.out.println(board[i][j]+"-"+row+"-"+col);
+			array[board[i][j]]=true;
+	
+			
+		}
+	}
+	
+}
 
 }
 
