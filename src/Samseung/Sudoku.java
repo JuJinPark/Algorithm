@@ -29,20 +29,6 @@ public class Sudoku {
 		}
 		initializeList();
 		dfs();
-//		System.out.println(que.size());
-//		System.out.println(undecidedCount+"before");
-//		while(!que.isEmpty()) {
-//			SudokuCor crtcor=que.poll();
-//			//System.out.println(crtcor.row+","+crtcor.col);
-//			chekcRow(crtcor);
-//			checkCol(crtcor);
-//			checkSquare(crtcor);
-//
-//			
-//		}
-//		List<Integer> check=candidateNmberListPerCor.get(new SudokuCor(4,7));
-//		System.out.println(check.toString());
-	//	System.out.println(undecidedCount+"after");
 		print();
 		
 		
@@ -61,81 +47,10 @@ public class Sudoku {
 		}
 	}
 	
-	public static void chekcRow(SudokuCor cor) {
-		
-		for(int i=0;i<9;i++) {
-			if(board[i][cor.col]==0) {
-				SudokuCor nxtcor=new SudokuCor(i,cor.col);
-					
-				int value = board[cor.row][cor.col];
-				handle(nxtcor,value) ;
-			}
-		}
-	}
-	
-	
-	
-	public static void checkCol(SudokuCor cor) {
 
-		for(int i=0;i<9;i++) {
-			if(board[cor.row][i]==0) {
-				SudokuCor nxtcor=new SudokuCor(cor.row,i);
-					
-				int value = board[cor.row][cor.col];
-				handle(nxtcor,value) ;
-			}
-		}
-	}
-	
-	public static void checkSquare(SudokuCor cor) {
-		
-		for(int i=3*(cor.row/3);i<=(3*(cor.row/3))+2;i++) {
-			for(int j=3*(cor.col/3);j<=(3*(cor.col/3))+2;j++) {
-				
-				if(board[i][j]==0) {
-					SudokuCor nxtcor=new SudokuCor(i,j);
-						
-					int value = board[cor.row][cor.col];
-					handle(nxtcor,value) ;
-				}
-				
-			}
-		}
-		
-	}
-	
-	public static void handle(SudokuCor nxtcor,int value) {
-	
-		List<Integer> list=candidateNmberListPerCor.get(nxtcor);
-	
-			
-			
-			removeValFromlist(list,value);
-			
-			if(list.size()==1) {
-				undecidedCount--;
-				que.add(nxtcor);
-				board[nxtcor.row][nxtcor.col]=list.get(0);
-				candidateNmberListPerCor.remove(nxtcor);
-			}
-	}
-	
-	private static void removeValFromlist(List<Integer> list, int value) {
-		for(int i=0;i<list.size();i++) {
-			if(list.get(i)==value) {
-				list.remove(i);
-			}
-		}
-		
-	}
-	
+
 	public static boolean dfs() {
-		
-//		
-//		if(undecidedCount==0) {
-//			return true;
-//		}
-//		
+
 		
 		for(int i=0;i<9;i++) {
 			for(int j=0;j<9;j++) {
@@ -241,7 +156,7 @@ public class Sudoku {
 			
 		
 		
-		for(int i=9;i>0;i--) {
+		for(int i=1;i<=9;i++) {
 			if(array[i]==false) {
 				list.add(i);
 			}
