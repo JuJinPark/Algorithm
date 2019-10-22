@@ -10,7 +10,11 @@ public class ConvertBracketsTest {
         public void bracketsNumber() {
             ConvertBrackets test= new ConvertBrackets();
 
+
             assertEquals("()(())()",test.solution("()))((()"));
+            assertEquals("()",test.solution(  ")("));
+            assertEquals("()(())()",test.solution("()))((()"));
+
 
         }
 
