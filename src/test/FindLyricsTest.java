@@ -1,6 +1,7 @@
 package test;
 
 import main.java.Kakao.FindLyrics;
+//import main.java.Kakao.Solution;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -12,7 +13,7 @@ public class FindLyricsTest {
         FindLyrics test= new FindLyrics();
 
 
-        assertArrayEquals(new int[]{3,2,4,1,0,1,1,2,0,1,1,1},test.solution(new String[] {
+        assertArrayEquals(new int[]{3,2,4,1,0,1,1,2,0,1,1,1,0,1},test.solution(new String[] {
                 "frodo",
                 "front",
                 "frost",
@@ -34,11 +35,11 @@ public class FindLyricsTest {
                         "kakao?",
                         "kaka?",
                         "froze?",
-                        "fros?"
+                        "fros?",
+                        "kaka??",
+                        "???zen"
                 }
                 ));
-
-
 
     }
 }
