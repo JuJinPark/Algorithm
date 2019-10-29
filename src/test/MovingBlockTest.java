@@ -1,33 +1,49 @@
 package test;
 
-
 import main.java.Kakao.LockAndKey;
+import main.java.Kakao.MovingBlock;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class LockAndKeyTest {
+public class MovingBlockTest {
 
 
 
     @Test
-    public void lockAndKeyTest(){
-        LockAndKey test= new LockAndKey();
+    public void movingBlockTest(){
+        MovingBlock test= new MovingBlock();
 
-        int[][] key= new int[][] {
-                {0,0,0},
-                {1,0,0},
-                {0,1,1}
+        int[][] board= new int[][] {
+                {0, 0, 0, 1, 1},
+                {0, 0, 0, 1, 0},
+                {0, 1, 0, 1, 1},
+                {1, 1, 0, 0, 1},
+                {0, 0, 0, 0, 0},
         };
 
-        int[][] lock= new int[][]{
-                {1,1,1},
-                {1,1,0},
-                {1,0,1}
+
+        int result=test.solution(board);
+        assertEquals(7,result);
+    }
+
+    @Test
+    public void movingBlockTest2(){
+        MovingBlock test= new MovingBlock();
+
+        int[][] board= new int[][] {
+                {0, 0, 0, 0, 0, 0, 1},
+                {1, 1, 1, 0, 0, 1, 1},
+                {1, 1, 1, 1, 0, 1, 1},
+                {0, 0, 0, 0, 0, 1, 1},
+                {0, 0, 1, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0},
         };
-        Boolean result=test.solution(key,lock);
-        assertEquals(true,result);
+
+
+        int result=test.solution(board);
+        assertEquals(15,result);
     }
 
 //    @Test
