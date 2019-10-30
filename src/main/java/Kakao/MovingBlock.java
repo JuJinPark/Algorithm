@@ -36,28 +36,49 @@ public class MovingBlock {
 
     private void move(Robot robot,int[][] board){
 
-
-        moveForward(robot,board);
-        moveBackward(robot,board);
+        moveUp(robot,board);
+        moveDown(robot,board);
+        moveLeft(robot,board);
+        moveRight(robot,board);
         spinClockwise(robot,board);
         spinAntiClockwise(robot,board);
 
 
     }
+    private void moveUp(Robot robot,int[][] board){
 
-    private void moveForward(Robot robot,int[][] board){
-        Robot forward=robot.moveForward();
-        if(isMovable(forward.getPosition().getFront(),board)){
-            checkDuplicateAndAdd(forward);
+        Robot upWard=robot.moveUpward();
+        if(isMovable(upWard.getPosition(),board)){
+            checkDuplicateAndAdd(upWard);
         }
+
     }
 
-    private void moveBackward(Robot robot,int[][] board){
-        Robot backward=robot.moveBackward();
-        if(isMovable(backward.getPosition().getRear(),board)){
-            checkDuplicateAndAdd(backward);
+    private void moveDown(Robot robot,int[][] board){
+        Robot downWard=robot.downUpward();
+        if(isMovable(downWard.getPosition(),board)){
+            checkDuplicateAndAdd(downWard);
         }
+
     }
+
+    private void moveLeft(Robot robot,int[][] board){
+        Robot left=robot.left();
+        if(isMovable(left.getPosition(),board)){
+            checkDuplicateAndAdd(left);
+        }
+
+    }
+
+
+    private void moveRight(Robot robot,int[][] board){
+        Robot right=robot.right();
+        if(isMovable(right.getPosition(),board)){
+            checkDuplicateAndAdd(right);
+        }
+
+    }
+
 
 
     private void spinClockwise(Robot robot,int[][] board){
@@ -76,9 +97,9 @@ public class MovingBlock {
 
     private void spinFrontAntiClockwise(Robot robot,int[][] board){
         MBCor spinningCor=robot.getCorWhenSpinFrontAntiClockwise();
-        if(isMovable(spinningCor,board)){
+        if(checkWallAndOutOfBoard(spinningCor,board)){
             Robot frontAntiClockwise=robot.spinFrontAntiClockwise();
-            if(isMovable(frontAntiClockwise.getPosition().getRear(),board)){
+            if(isMovable(frontAntiClockwise.getPosition(),board)){
                 checkDuplicateAndAdd(frontAntiClockwise);
 
             }
@@ -88,9 +109,9 @@ public class MovingBlock {
 
     private void spinRearAntiClockwise(Robot robot,int[][] board){
         MBCor spinningCor=robot.getCorWhenSpinRearAntiClockwise();
-        if(isMovable(spinningCor,board)){
+        if(checkWallAndOutOfBoard(spinningCor,board)){
             Robot rearAntiClockwise=robot.spinRearAntiClockwise();
-            if(isMovable(rearAntiClockwise.getPosition().getFront(),board)){
+            if(isMovable(rearAntiClockwise.getPosition(),board)){
                 checkDuplicateAndAdd(rearAntiClockwise);
 
             }
@@ -100,9 +121,9 @@ public class MovingBlock {
 
     private void spinFrontClockwise(Robot robot,int[][] board){
         MBCor spinningCor=robot.getCorWhenSpinFrontClockwise();
-        if(isMovable(spinningCor,board)){
+        if(checkWallAndOutOfBoard(spinningCor,board)){
             Robot frontClockwise=robot.spinFrontClockwise();
-            if(isMovable(frontClockwise.getPosition().getFront(),board)){
+            if(isMovable(frontClockwise.getPosition(),board)){
                 checkDuplicateAndAdd(frontClockwise);
 
             }
@@ -112,9 +133,9 @@ public class MovingBlock {
 
     private void spinRearClockwise(Robot robot,int[][] board){
         MBCor spinningCor=robot.getCorWhenSpinRearClockwise();
-        if(isMovable(spinningCor,board)){
+        if(checkWallAndOutOfBoard(spinningCor,board)){
             Robot rearClockwise=robot.spinRearClockwise();
-            if(isMovable(rearClockwise.getPosition().getRear(),board)){
+            if(isMovable(rearClockwise.getPosition(),board)){
                 checkDuplicateAndAdd(rearClockwise);
 
             }
@@ -129,8 +150,12 @@ public class MovingBlock {
         }
     }
 
-    private boolean isMovable(MBCor movedCor,int[][] board){
+    private boolean isMovable(Position position,int[][] board){
 
+       return checkWallAndOutOfBoard(position.getFront(),board)&&checkWallAndOutOfBoard(position.getRear(),board);
+    }
+
+    private boolean checkWallAndOutOfBoard(MBCor movedCor,int[][] board){
         if(movedCor.getX()<0||movedCor.getX()>=board.length||movedCor.getY()<0|movedCor.getY()>=board.length) return false;
 
         if(board[movedCor.getY()][movedCor.getX()]==1) return false;
@@ -160,6 +185,7 @@ class Robot{
     private int travelledTime;
     private int axis;
 
+
     Robot(Position position,int travelledTime,int axis){
         this.position=position;
         this.travelledTime=travelledTime;
@@ -172,14 +198,6 @@ class Robot{
 
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setTravelledTime(int travelledTime) {
-        this.travelledTime = travelledTime;
-    }
-
     public int getTravelledTime() {
         return travelledTime;
     }
@@ -188,78 +206,51 @@ class Robot{
         return position;
     }
 
-    public int getAxis(){
-        return this.axis;
+    public Robot moveUpward(){
+
+        return moveIntoFourDirection(0,-1);
+
     }
-
-    public Robot moveForward(){
-        MBCor oldFront=this.getPosition().getFront();
-        MBCor newFront=null;
-
-        if(this.axis==1){
-            newFront=new MBCor(oldFront.getX()+1,oldFront.getY());
-        }else{
-            newFront=new MBCor(oldFront.getX(),oldFront.getY()+1);
-        }
-
-        return new Robot(new Position(newFront,oldFront),this.travelledTime+1,this.axis);
+    public Robot downUpward(){
+        return moveIntoFourDirection(0,1);
 
     }
 
-    public Robot moveBackward(){
-        MBCor oldRear=this.getPosition().getRear();
-        MBCor newRear=null;
-
-        if(this.axis==1){
-            newRear=new MBCor(oldRear.getX()-1,oldRear.getY());
-        }else{
-            newRear=new MBCor(oldRear.getX(),oldRear.getY()-1);
-        }
-
-        return new Robot(new Position(oldRear,newRear),this.travelledTime+1,this.axis);
+    public Robot left(){
+        return moveIntoFourDirection(-1,0);
     }
+
+    public Robot right(){
+        return moveIntoFourDirection(1,0);
+    }
+    public Robot moveIntoFourDirection(int x,int y){
+        MBCor newFront= new MBCor(this.getPosition().getFront().getX()+x,this.getPosition().getFront().getY()+y);
+        MBCor newRear=new MBCor(this.getPosition().getRear().getX()+x,this.getPosition().getRear().getY()+y);
+
+        return new Robot(new Position(newFront,newRear),this.travelledTime+1,this.axis);
+    }
+
+
+
+
 
     public MBCor getCorWhenSpinFrontClockwise(){
-//        MBCor front=this.getPosition().getFront();
-//        MBCor cor=null;
-//        if(this.axis==1){
-//            cor=new MBCor(front.getX(),front.getY()+1);
-//        }else{
-//            cor=new MBCor(front.getX()-1,front.getY());
-//        }
+
         return calculateCor(this.getPosition().getFront(),-1,-1);
     }
 
     public MBCor getCorWhenSpinFrontAntiClockwise(){
-//        MBCor front=this.getPosition().getFront();
-//        MBCor cor=null;
-//        if(this.axis==1){
-//            cor=new MBCor(front.getX(),front.getY()-1);
-//        }else{
-//            cor=new MBCor(front.getX()+1,front.getY());
-//        }
+
         return calculateCor(this.getPosition().getFront(),-1,1);
     }
 
     public MBCor getCorWhenSpinRearClockwise(){
-//        MBCor front=this.getPosition().getRear();
-//        MBCor cor=null;
-//        if(this.axis==1){
-//            cor=new MBCor(front.getX(),front.getY()-1);
-//        }else{
-//            cor=new MBCor(front.getX()+1,front.getY());
-//        }
+
         return calculateCor(this.getPosition().getRear(),1,-1);
     }
 
     public MBCor getCorWhenSpinRearAntiClockwise(){
-//        MBCor front=this.getPosition().getFront();
-//        MBCor cor=null;
-//        if(this.axis==1){
-//            cor=new MBCor(front.getX(),front.getY()+1);
-//        }else{
-//            cor=new MBCor(front.getX()-1,front.getY());
-//        }
+
         return calculateCor(this.getPosition().getRear(),1,1);
     }
 
@@ -385,13 +376,7 @@ class MBCor{
         return y;
     }
 
-    public void setX(int x){
-        this.x=x;
-    }
 
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public String toString(){
         return this.y+","+this.x;
